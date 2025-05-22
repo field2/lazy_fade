@@ -7,6 +7,8 @@ Stable tag: 1.0
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+A simple plugin to lazy-load images and fade in content as you scroll.
+
 == Description ==
 
 Lazy Fade is a simple plugin to enhance the presentation of your site. As the user scrolls, content will slightly fade and animate into view, adding a more natural look and feel to the experience. Furthermore, images "below the fold" will only load when they come into view, saving download time and optimizing your site.
