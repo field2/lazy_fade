@@ -1,9 +1,17 @@
 <?php
 /**
  * Plugin Name: Lazy Fade
+ * Plugin URI: https://github.com/EmpireOfLight/lazy-fade
  * Description: Lazy-load images and fade-in wp-block-group elements on scroll.
  * Version: 1.0
  * Author: Ben Dunkle
+ * Author URI: https://bendunkle.com
+ * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: lazy-fade
+ * Requires at least: 5.0
+ * Tested up to: 6.8.1
+ * Requires PHP: 7.0
  */
 
 if (!defined('ABSPATH')) {
