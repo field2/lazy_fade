@@ -2,7 +2,7 @@
 
 Contributors: EmpireOfLight
 Tags: UI, lazyload
-Requires at least: 7.0
+Requires at least: 5.0
 Tested up to: 6.8.1
 Stable tag: 1.0
 License: GPL-2.0
