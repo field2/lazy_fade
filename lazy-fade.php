@@ -1,17 +1,9 @@
 <?php
 /**
  * Plugin Name: Lazy Fade
- * Plugin URI: https://github.com/EmpireOfLight/lazy-fade
  * Description: Lazy-load images and fade-in wp-block-group elements on scroll.
  * Version: 1.0
  * Author: Ben Dunkle
- * Author URI: https://bendunkle.com
- * License: GPL-2.0-or-later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: lazy-fade
- * Requires at least: 5.0
- * Tested up to: 6.8
- * Requires PHP: 7.0
  */
 
 if (!defined('ABSPATH')) {
@@ -33,27 +25,73 @@ add_action('wp_enqueue_scripts', function () {
     );
 });
 
-// Add lazy class to images in the_content
+// Add lazy-fade class to images in the_content
 add_filter('the_content', function ($content) {
     return preg_replace_callback(
-        '/<img(.*?)src=["\'](.*?)["\'](.*?)>/i',
+        '/<img([^>]*?)src=["\'](.*?)["\']([^>]*)>/i',
         function ($matches) {
-            $attrs = $matches[1] . $matches[3];
+            $before = $matches[1];
             $src = $matches[2];
-            return '<img class="lazy-fade" data-src="' . esc_attr($src) . '" ' . $attrs . '>';
+            $after = $matches[3];
+
+            // Check for class attribute
+            if (preg_match('/class=["\']([^"\']*)["\']/', $before . $after, $classMatch)) {
+                // Append lazy-fade to existing class
+                $newClass = trim($classMatch[1] . ' lazy-fade');
+                $newAttrs = preg_replace(
+                    '/class=["\']([^"\']*)["\']/',
+                    'class="' . esc_attr($newClass) . '"',
+                    $before . $after
+                );
+            } else {
+                // Add new class attribute
+                $newAttrs = trim($before . $after) . ' class="lazy-fade"';
+            }
+
+            // Replace src with data-src
+            $newAttrs = preg_replace(
+                '/\s*src=["\'](.*?)["\']/',
+                '',
+                $newAttrs
+            );
+
+            return '<img data-src="' . esc_attr($src) . '" ' . trim($newAttrs) . '>';
         },
         $content
     );
 });
 
-// Add lazy class to post thumbnails (featured images)
+// Add lazy-fade class to post thumbnails (featured images)
 add_filter('post_thumbnail_html', function ($html) {
     return preg_replace_callback(
-        '/<img(.*?)src=["\'](.*?)["\'](.*?)>/i',
+        '/<img([^>]*?)src=["\'](.*?)["\']([^>]*)>/i',
         function ($matches) {
-            $attrs = $matches[1] . $matches[3];
+            $before = $matches[1];
             $src = $matches[2];
-            return '<img class="lazy-fade" data-src="' . esc_attr($src) . '" ' . $attrs . '>';
+            $after = $matches[3];
+
+            // Check for class attribute
+            if (preg_match('/class=["\']([^"\']*)["\']/', $before . $after, $classMatch)) {
+                // Append lazy-fade to existing class
+                $newClass = trim($classMatch[1] . ' lazy-fade');
+                $newAttrs = preg_replace(
+                    '/class=["\']([^"\']*)["\']/',
+                    'class="' . esc_attr($newClass) . '"',
+                    $before . $after
+                );
+            } else {
+                // Add new class attribute
+                $newAttrs = trim($before . $after) . ' class="lazy-fade"';
+            }
+
+            // Replace src with data-src
+            $newAttrs = preg_replace(
+                '/\s*src=["\'](.*?)["\']/',
+                '',
+                $newAttrs
+            );
+
+            return '<img data-src="' . esc_attr($src) . '" ' . trim($newAttrs) . '>';
         },
         $html
     );
