@@ -3,7 +3,7 @@
  * Plugin Name: Lazy Fade
  * Plugin URI: https://github.com/YOUR-USERNAME/lazy_fade
  * Description: Lazy-load images and fade-in wp-block-group elements on scroll.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Ben Dunkle
  * Author URI: https://bendunkle.com
  * License: GPL-2.0-or-later
