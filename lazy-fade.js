@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const lazyImages = document.querySelectorAll('img.lazy-fade');
-    const groups = document.querySelectorAll('.group-fade-in');
+    // Function to check if element is in the last child of body
+    function isInLastChildOfBody(element) {
+        const bodyChildren = document.body.children;
+        if (bodyChildren.length === 0) return false;
+        const lastChild = bodyChildren[bodyChildren.length - 1];
+        return lastChild.contains(element);
+    }
+
+    // Filter out elements in the last child of body
+    const allLazyImages = document.querySelectorAll('img.lazy-fade');
+    const allGroups = document.querySelectorAll('.group-fade-in');
+
+    const lazyImages = Array.from(allLazyImages).filter(img => !isInLastChildOfBody(img));
+    const groups = Array.from(allGroups).filter(group => !isInLastChildOfBody(group));
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -10% 0px', // Trigger earlier
+        threshold: 0.1 // Trigger when 10% is visible
+    };
 
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -11,10 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 observer.unobserve(img);
             }
         });
-    }, {
-        rootMargin: '100px',
-        threshold: 0.1
-    });
+    }, observerOptions);
 
     lazyImages.forEach(img => imageObserver.observe(img));
 
