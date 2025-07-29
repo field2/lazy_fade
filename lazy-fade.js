@@ -1,18 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Function to check if element is in the last child of body
-    function isInLastChildOfBody(element) {
-        const bodyChildren = document.body.children;
-        if (bodyChildren.length === 0) return false;
-        const lastChild = bodyChildren[bodyChildren.length - 1];
-        return lastChild.contains(element);
-    }
-
-    // Filter out elements in the last child of body
-    const allLazyImages = document.querySelectorAll('img.lazy-fade');
-    const allGroups = document.querySelectorAll('.group-fade-in');
-
-    const lazyImages = Array.from(allLazyImages).filter(img => !isInLastChildOfBody(img));
-    const groups = Array.from(allGroups).filter(group => !isInLastChildOfBody(group));
+    const lazyImages = document.querySelectorAll('img.lazy-fade');
+    const groups = document.querySelectorAll('.group-fade-in');
 
     const observerOptions = {
         root: null,
@@ -46,4 +34,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     groups.forEach(group => groupObserver.observe(group));
+
+    // Handle elements near the bottom of the page
+    function checkBottomElements() {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // If we're within 100px of the bottom
+        if (scrollTop + windowHeight >= documentHeight - 100) {
+            // Check for any unactivated elements that are visible
+            const unactivatedImages = document.querySelectorAll('img.lazy-fade:not(.fade-in)');
+            const unactivatedGroups = document.querySelectorAll('.group-fade-in:not(.animate)');
+
+            unactivatedImages.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                if (rect.top < windowHeight && rect.bottom > 0) {
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.onload = () => img.classList.add('fade-in');
+                    }
+                }
+            });
+
+            unactivatedGroups.forEach(group => {
+                const rect = group.getBoundingClientRect();
+                if (rect.top < windowHeight && rect.bottom > 0) {
+                    group.classList.add('animate');
+                }
+            });
+        }
+    }
+
+    // Check on scroll
+    window.addEventListener('scroll', checkBottomElements);
+    // Check once after load in case page is already at bottom
+    setTimeout(checkBottomElements, 500);
 });
