@@ -3,7 +3,7 @@ Contributors: EmpireOfLight
 Tags: UI, lazyload, lazy-load
 Requires at least: 5.0
 Tested up to: 6.8.1
-Stable tag: 1.0
+Stable tag: 1.0.2
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ Lazy Fade is a simple plugin to enhance the presentation of your site. As the us
 
 = 1.0.2 =
 
-Bug fixes
+Fixed issue where elements at the bottom of the page wouldn't fade in when scrolled into view.
 
 = 1.0.1 =
 
